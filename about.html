@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us - Bakery Boom</title>
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/about.css" />
+  <link rel="stylesheet" href="styles/footer.css" />
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <main class="about-wrapper">
+    <section class="hero-section">
+      <h1>About Rcb Bakery</h1>
+      <p>Freshly baked memories since 2008.</p>
+    </section>
+
+    <section class="story-section">
+      <h2>Our Story</h2>
+      <p>Bakery Boom started as a small family kitchen with a big dream: to bring people together through the love of delicious pastries, breads, and cakes. Over the years, our commitment to quality ingredients and traditional baking methods has helped us grow into a beloved local favorite.</p>
+    </section>
+
+    <section class="mission-values">
+      <div class="mission">
+        <h2>Our Mission</h2>
+        <p>To deliver happiness in every bite through hand-crafted, wholesome baked goods that spark joy and connection.</p>
+      </div>
+      <div class="values">
+        <h2>Our Values</h2>
+        <ul>
+          <li>🍞 Fresh Ingredients</li>
+          <li>❤️ Customer Love</li>
+          <li>🎯 Passion & Precision</li>
+          <li>🌿 Sustainable Practices</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="team-section">
+      <h2>Meet Our Chefs</h2>
+      <div class="team-grid">
+        <div class="team-member">
+          <img src="images/chef1.jpg" alt="Chef Priya">
+          <h3>Chef Virat</h3>
+          <p>Head Pastry Chef with 15+ years of experience in European desserts.</p>
+        </div>
+        <div class="team-member">
+          <img src="images/chef2.jpg" alt="Chef Rahul">
+          <h3>Chef Smriti</h3>
+          <p>Master Bread Maker specializing in sourdough and artisan loaves.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script type="module">
+    import { renderNavbar } from './components/navbar.js';
+    window.addEventListener("DOMContentLoaded", () => {
+      renderNavbar();
+    });
+  </script>
+
+  <script>
+    fetch("footer.html")
+      .then((res) => res.text())
+      .then((data) => {
+        document.getElementById("footer").innerHTML = data;
+      });
+  </script>
+  
+</body>
+</html>

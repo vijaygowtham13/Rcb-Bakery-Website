@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pastries</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../styles/style.css" />
+    <link rel="stylesheet" href="/styles/footer.css" />
+
+    <style>
+      .page-heading {
+        margin-top: 200px;
+        text-align: center;
+        font-size: 2rem;
+        color: #333;
+      }
+
+      @media (max-width: 768px) {
+        .page-heading {
+          margin-top: 80px;
+          font-size: 1.5rem;
+          padding: 0 1rem;
+        }
+      }
+
+      .pastry-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 1rem;
+      }
+
+      .pastry-card {
+        background-color: #fff8f0;
+        border-radius: 12px;
+        padding: 1rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+
+      .pastry-card img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 8px;
+      }
+
+      .pastry-card h3 {
+        margin-top: 0.5rem;
+      }
+
+      .pastry-card p {
+        font-size: 0.9rem;
+      }
+
+      .pastry-card button {
+        background-color: #ff8c42;
+        color: white;
+        border: none;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+
+      .pastry-card button:hover {
+        background-color: #e6762e;
+      }
+
+      .quantity-control {
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .quantity-control button {
+        padding: 0.3rem 0.7rem;
+        font-size: 1rem;
+      }
+
+      .quantity {
+        font-size: 1rem;
+        width: 20px;
+        display: inline-block;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <div id="navbar"></div>
+
+    <!-- Heading -->
+    <h2 class="page-heading">Delicious Pastries</h2>
+
+    <!-- Grid -->
+    <div class="pastry-grid" id="pastry-grid">
+     
+    </div>
+
+    <!-- Cart Logic -->
+    <script>
+   data = [{
+    name : "Croissants Ordinaires",
+    img_url: "../images/croi1.jpg",
+    cost:"₹180",
+    desc:"Classic, flaky layers with a light, buttery touch."
+
+   },
+   {
+     name : "Plain Butter Croissant",
+    img_url: "../images/croi2.jpg",
+    cost:"₹200",
+     desc:"Golden, crisp outside and buttery-soft inside."
+   },
+     {
+     name : "Chocolate Croissant",
+    img_url: "../images/croi3.jpg",
+    cost:"₹220",
+     desc:"Flaky pastry filled with rich, melted chocolate."
+   },
+     {
+     name : "Chocolate Chip Croissant",
+    img_url: "../images/croi4.jpg",
+    cost:"₹240",
+    desc:"Buttery layers studded with sweet chocolate chips."
+   },
+     {
+     name : "Raisin Croissant",
+    img_url: "../images/croi5.jpg",
+    cost:"₹190",
+     desc:"Lightly sweet with juicy raisins tucked in tender folds."
+   }
+  ];
+
+      const additems = () => {
+  const ele = document.getElementById("pastry-grid");
+  let items = ``;
+  data.forEach((item) => {
+    items += `
+      <div class="pastry-card">
+        <img src="${item.img_url}" alt="${item.name}" />
+        <h3>${item.name}</h3>
+        <p>${item.desc}</p>
+        <p>${item.cost}</p>
+        <div class="quantity-control">
+          <button onclick="decreaseQuantity(this)">−</button>
+          <span class="quantity">0</span>
+          <button onclick="increaseQuantity(this)">+</button>
+        </div>
+        <button
+          onclick="addToCart('${item.name}', '${item.cost}', '${item.img_url}', this)"
+        >
+          Add to Cart
+        </button>
+      </div>
+    `;
+  });
+
+  ele.innerHTML = items;
+};
+
+
+      function increaseQuantity(button) {
+        const quantitySpan = button.parentElement.querySelector(".quantity");
+        let quantity = parseInt(quantitySpan.textContent);
+        quantitySpan.textContent = quantity + 1;
+      }
+
+      function decreaseQuantity(button) {
+        const quantitySpan = button.parentElement.querySelector(".quantity");
+        let quantity = parseInt(quantitySpan.textContent);
+        if (quantity > 0) {
+          quantitySpan.textContent = quantity - 1;
+        }
+      }
+
+      function addToCart(name, price, image, buttonEl) {
+        const quantity = parseInt(
+          buttonEl.parentElement.querySelector(".quantity").textContent
+        );
+
+        if (quantity <= 0) {
+          alert("Please increase quantity before adding to cart.");
+          return;
+        }
+
+        const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
+        const index = cartItems.findIndex((item) => item.name === name);
+
+        if (index !== -1) {
+          cartItems[index].quantity += quantity;
+        } else {
+          cartItems.push({ name, price, image, quantity });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cartItems));
+        alert(`${quantity} ${name}(s) added to cart!`);
+
+        if (window.updateCartCount) updateCartCount(); // 🔁 Update count if function is available
+      }
+    </script>
+
+    <!-- Navbar script -->
+    <script type="module">
+      import { renderNavbar } from "../components/navbar.js";
+       import { updateCartCount} from "../utils/cartUtils.js";
+
+      window.addEventListener("DOMContentLoaded", () => {
+        renderNavbar();
+        updateCartCount();
+        additems();
+      });
+
+      window.updateCartCount = updateCartCount;
+    </script>
+    <script>
+      fetch("/footer.html")
+        .then((response) => response.text())
+        .then((data) => {
+          document.getElementById("footer").innerHTML = data;
+        });
+    </script>
+
+    <div id="footer"></div>
+  </body>
+</html>

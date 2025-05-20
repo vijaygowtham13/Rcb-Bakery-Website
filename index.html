@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RCB BAKERY WEBSITE</title>
+
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="stylesheet" href="styles/footer.css" />
+  <link rel="stylesheet" href="styles/featured.css" />
+</head>
+<body>
+
+  <div id="navbar"></div>
+
+  <div id="hero"></div>
+
+  <div id="featured"></div>
+
+  <div class="promo-banner">
+    <img src="images/indeximg.jpeg" alt="Promotional Banner" />
+  </div>
+
+  <div id="categories"></div>
+
+  <div id="footer"></div>
+
+  <button id="scrollToTopBtn" title="Go to top">⬆</button>
+
+  <script type="module">
+    import { renderNavbar } from './components/navbar.js';
+    import { updateCartCount } from './utils/cartUtils.js';
+    import { setupFeaturedEvents } from './featured.js';
+
+    window.addEventListener('DOMContentLoaded', () => {
+      // Render navbar and update cart count
+      renderNavbar();
+      updateCartCount();
+
+      // Load footer.html dynamically
+      fetch('footer.html')
+        .then(res => res.text())
+        .then(data => {
+          document.getElementById('footer').innerHTML = data;
+        });
+
+      // Load featured.html dynamically, then setup events
+      fetch('featured.html')
+        .then(res => res.text())
+        .then(data => {
+          document.getElementById('featured').innerHTML = data;
+          setupFeaturedEvents();
+        })
+        .catch(err => console.error(err));
+    });
+
+    // Scroll featured horizontally
+    window.scrollFeatured = function(direction) {
+      const container = document.getElementById('featured-scroll');
+      if (!container) return;
+      const scrollAmount = container.offsetWidth;
+      container.scrollBy({
+        left: direction === 'right' ? scrollAmount : -scrollAmount,
+        behavior: 'smooth'
+      });
+    };
+
+    // Toggle navbar mobile menu
+    window.toggleNavbar = function() {
+      const navLinks = document.querySelector(".nav-links");
+      if (navLinks) navLinks.classList.toggle("show");
+    };
+  </script>
+  
+
+
+  <script type="module" src="script.js"></script>
+
+</body>
+</html>

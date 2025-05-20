@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shopping Cart</title>
+  <link rel="stylesheet" href="../styles/style.css" />
+  <link rel="stylesheet" href="../styles/footer.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding-top: 200px;
+      background-color: white;
+    }
+
+    .cart-container {
+      padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .cart-item img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .cart-item-details {
+      flex-grow: 1;
+      margin-left: 1rem;
+    }
+
+    .cart-item button {
+      background-color: #ff8c42;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .cart-item button:hover {
+      background-color: #e6762e;
+    }
+
+    .action-btn {
+      background-color: #4caf50;
+      color: white;
+      padding: 0.8rem;
+      width: 100%;
+      max-width: 300px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin: 0.5rem auto;
+      display: block;
+    }
+
+    .action-btn:hover {
+      background-color: #45a049;
+    }
+
+    .remove-all-btn {
+      background-color: #dc3545;
+    }
+
+    .remove-all-btn:hover {
+      background-color: #c82333;
+    }
+
+    .checkout-form {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .checkout-form input {
+      padding: 0.5rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      margin-right: 10px;
+      width: 60%;
+      max-width: 300px;
+    }
+
+    .checkout-form button {
+      padding: 0.5rem 1rem;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .checkout-form button:hover {
+      background-color: #45a049;
+    }
+
+    .success-message {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .success-message-container {
+      background-color: #fff;
+      width: 300px;
+      height: 200px;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .success-message p {
+      color: #28a745;
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .success-message button {
+      padding: 0.5rem 1rem;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .success-message button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div id="navbar"></div>
+
+  <div class="cart-container">
+    <h2>Your Cart</h2>
+
+    <div id="cart-items"></div>
+
+    <!-- 👇 Grand total added here -->
+    <div id="cart-total" style="text-align: right; font-size: 1.2rem; font-weight: bold; margin-top: 1rem;"></div>
+
+    <button class="action-btn" onclick="showCheckoutForm()">Proceed to Checkout</button>
+    <button class="action-btn remove-all-btn" onclick="clearCart()">Remove All Items</button>
+
+    <div class="checkout-form" id="checkout-form">
+      <label for="email">Enter your Email:</label>
+      <input type="email" id="email" placeholder="example@email.com" />
+      <button onclick="submitCheckout()">Submit</button>
+    </div>
+  </div>
+
+  <div class="success-message" id="success-message">
+    <div class="success-message-container">
+      <p>Your order has been successfully placed!</p>
+      <button onclick="closeSuccessMessage()">Close</button>
+    </div>
+  </div>
+
+  <div id="footer"></div>
+
+  <script>
+    function renderCart() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const cartItemsContainer = document.getElementById("cart-items");
+      const cartTotalDisplay = document.getElementById("cart-total");
+
+      cartItemsContainer.innerHTML = "";
+      cartTotalDisplay.innerHTML = "";
+
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = "<p>Your cart is empty.</p>";
+        return;
+      }
+
+      let total = 0;
+
+      cart.forEach((item, index) => {
+        const itemDiv = document.createElement("div");
+        itemDiv.classList.add("cart-item");
+
+        const numericPrice = parseFloat(String(item.price).replace(/[^\d.]/g, ""));
+
+  const itemTotal = numericPrice * item.quantity;
+  total += itemTotal;
+
+        itemDiv.innerHTML = `
+          <img src="${item.image}" alt="${item.name}" />
+          <div class="cart-item-details">
+            <h4>${item.name}</h4>
+            <p>Price: ₹${item.price}</p>
+            <p>Quantity: ${item.quantity}</p>
+            <p>Total: ₹${itemTotal.toFixed(2)}</p>
+          </div>
+          <button onclick="removeFromCart(${index})">Remove</button>
+        `;
+
+        cartItemsContainer.appendChild(itemDiv);
+      });
+
+      cartTotalDisplay.innerHTML = `Grand Total: ₹${total.toFixed(2)}`;
+    }
+
+    function removeFromCart(index) {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
+
+    function clearCart() {
+      if (confirm("Are you sure you want to remove all items?")) {
+        localStorage.removeItem("cart");
+        renderCart();
+      }
+    }
+
+    function showCheckoutForm() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      if (cart.length === 0) {
+        alert("Your cart is empty. Please add items before proceeding to checkout.");
+        return;
+      }
+      document.getElementById("checkout-form").style.display = "block";
+    }
+
+    function submitCheckout() {
+      const email = document.getElementById("email").value.trim();
+      if (!email) {
+        alert("Please enter your email.");
+        return;
+      }
+
+      localStorage.removeItem("cart");
+      renderCart();
+      document.getElementById("checkout-form").style.display = "none";
+      document.getElementById("success-message").style.display = "flex";
+    }
+
+    function closeSuccessMessage() {
+      document.getElementById("success-message").style.display = "none";
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      renderCart();
+
+      import('../components/navbar.js').then(module => {
+        module.renderNavbar();
+      });
+
+      fetch('../footer.html')
+        .then(res => res.text())
+        .then(data => {
+          document.getElementById('footer').innerHTML = data;
+        });
+    });
+  </script>
+</body>
+</html>

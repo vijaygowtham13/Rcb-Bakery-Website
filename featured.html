@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Featured Items</title>
+</head>
+<body>
+
+<div id="featured-wrapper">
+  <h2 class="featured-title">Featured Items</h2>
+
+  <div class="featured-container">
+    <button class="scroll-btn left" onclick="scrollFeatured('left')">◀</button>
+
+    <div id="featured-scroll">
+      <div class="featured-item">
+        <img src="images/Featured1.jpg" alt="Chocolate Truffle" />
+        <h3>Juicy RCB Wings</h3>
+        <p>₹450</p>
+        <div class="quantity-controls">
+          <button class="qty-minus">-</button>
+          <span class="qty">0</span>
+          <button class="qty-plus">+</button>
+        </div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+
+      <div class="featured-item">
+        <img src="images/Featured2.jpg" alt="Pineapple Pastry" />
+        <h3>RCB Special Pizza</h3>
+        <p>₹2100</p>
+        <div class="quantity-controls">
+          <button class="qty-minus">-</button>
+          <span class="qty">0</span>
+          <button class="qty-plus">+</button>
+        </div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+
+      <div class="featured-item">
+        <img src="images/Featured3.jpg" alt="Red Velvet" />
+        <h3>Royal Chicken Kebab</h3>
+        <p>₹440</p>
+        <div class="quantity-controls">
+          <button class="qty-minus">-</button>
+          <span class="qty">0</span>
+          <button class="qty-plus">+</button>
+        </div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+
+      <div class="featured-item">
+        <img src="images/Featured4.jpg" alt="Butterscotch" />
+        <h3>Banglore's Delight Omlet</h3>
+        <p>₹220</p>
+        <div class="quantity-controls">
+          <button class="qty-minus">-</button>
+          <span class="qty">0</span>
+          <button class="qty-plus">+</button>
+        </div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+
+      <div class="featured-item">
+        <img src="images/Featured5.jpg" alt="Butterscotch" />
+        <h3>Chilli Panner(Virat's Fav)</h3>
+        <p>₹340</p>
+        <div class="quantity-controls">
+          <button class="qty-minus">-</button>
+          <span class="qty">0</span>
+          <button class="qty-plus">+</button>
+        </div>
+        <button class="add-to-cart">Add to Cart</button>
+      </div>
+
+   
+      <!-- Add more .featured-item blocks here as needed -->
+    </div>
+
+    <button class="scroll-btn right" onclick="scrollFeatured('right')">▶</button>
+  </div>
+</div>
+
+<script>
+  function scrollFeatured(direction) {
+    const container = document.getElementById("featured-scroll");
+    const scrollAmount = container.offsetWidth * 0.8;
+    container.scrollBy({
+      left: direction === 'right' ? scrollAmount : -scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+</script>
+
+<script type="module">
+  import { setupFeaturedEvents } from './featured.js';
+
+  window.addEventListener('DOMContentLoaded', () => {
+    setupFeaturedEvents();
+  });
+</script>
+
+
+</body>
+</html>
