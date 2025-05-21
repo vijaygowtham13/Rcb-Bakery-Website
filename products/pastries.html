@@ -21,6 +21,8 @@
         font-size: 1.5rem;
         padding: 0 1rem;
       }
+     
+      
     }
 
     .pastry-grid {
@@ -165,7 +167,7 @@
     </div>
   </div>
 
-  <!-- Cart Logic -->
+  
   <script>
     function increaseQuantity(button) {
       const quantitySpan = button.parentElement.querySelector('.quantity');
@@ -201,17 +203,18 @@
       localStorage.setItem('cart', JSON.stringify(cartItems));
       alert(`${quantity} ${name}(s) added to cart!`);
 
-      if (window.updateCartCount) updateCartCount(); // 🔁 Update count if function is available
+      if (window.updateCartCount) updateCartCount(); 
     }
   </script>
 
-  <!-- Navbar script -->
+ 
   <script type="module">
     import { renderNavbar } from '../components/navbar.js';
 import {updateCartCount} from '../utils/cartUtils.js' ;
     window.addEventListener('DOMContentLoaded', () => {
       renderNavbar();
       updateCartCount();
+      
     });
 
     window.updateCartCount = updateCartCount;

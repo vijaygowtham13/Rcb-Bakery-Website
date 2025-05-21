@@ -1,6 +1,6 @@
 /* style.css */
 
-/* Basic Layout */
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -9,7 +9,7 @@ body {
     margin: 0;
   padding: 0;
   box-sizing: border-box;
-   padding-top: 10px;
+   padding-top: 50px;
       
    
 }
@@ -69,8 +69,8 @@ section.categories, section.featured {
 .categories {
   padding: 2rem;
   text-align: center;
-  max-width: 1200px; /* Optional: controls width */
-  margin: 0 auto;    /* Center horizontally */
+  max-width: 1200px; 
+  margin: 0 auto;    
 }
 
 
@@ -84,8 +84,8 @@ section.categories, section.featured {
 
 .category-card img, .product-card img {
   width: 100%;
-  height: 180px; /* Fixed height */
-  object-fit: cover; /* Crops excess to fit */
+  height: 180px; 
+  object-fit: cover; 
   border-radius: 8px;
   display: block;
 
@@ -98,8 +98,9 @@ section.categories, section.featured {
   }
 
   .category-card img {
-    height: 140px; /* slightly smaller images on small devices */
+    height: 140px; 
   }
+ 
 }
 
 
@@ -143,8 +144,8 @@ button:hover {
   margin: 0 auto;
   gap:20rem;
   background-color: white;
-  border: 6px solid gold; /* 🔶 Adds a dark orange border */
-  border-radius: 8px;         /* (Optional) rounded corners */
+  border: 6px solid gold;
+  border-radius: 8px;         
   border-color: gold;
 }
 
@@ -154,13 +155,13 @@ button:hover {
   font-weight: bold;
   font-size: 1.5rem;
   color: red;
-  margin-left: 30px; /* increased left spacing */
+  margin-left: 30px; 
 }
 
 .logo-img {
-  width: 60px;  /* increased image size */
+  width: 60px;  
   height: auto;
-  margin-right: 15px; /* space between image and text */
+  margin-right: 15px; 
 }
 
 
@@ -184,14 +185,12 @@ button:hover {
 .nav-links a:hover {
   color: #e07a5f;
 }
-/* Dropdown grid layout: 5 per row (default for desktop) */
-/* Products button styling: transparent and elegant */
-/* Ensure container positions child dropdown correctly */
+
 .dropdown {
   position: relative;
 }
 
-/* PRODUCTS button style */
+
 .dropbtn {
   background-color: transparent;
   color: #333;
@@ -199,17 +198,17 @@ button:hover {
   border: none;
   cursor: pointer;
   padding: 10px 15px;
-  font-size: 16px;
+  font-size: 20px;
   transition: color 0.3s ease;
 }
 
-/* Show dropdown directly below the button */
+
 .dropdown-content {
   position: absolute;
-  top: 100%;   /* ✅ places it directly below the button */
-  left: 0;     /* aligns with left edge of button */
+  top: 100%;   
+  left: 0;     
   display: grid;
-  grid-template-columns: repeat(2, auto); /* 2 items per row */
+  grid-template-columns: repeat(2, auto); 
   gap: 10px;
   padding: 12px;
   background-color: #fff;
@@ -223,13 +222,13 @@ button:hover {
   min-width: 220px;
 }
 
-/* Show dropdown on hover */
+
 .dropdown:hover .dropdown-content {
   visibility: visible;
   opacity: 1;
 }
 
-/* Style the dropdown links */
+
 .dropdown-content a {
   text-decoration: none;
   color: #333;
@@ -244,7 +243,7 @@ button:hover {
 }
 
 
-/* Hamburger button (☰) */
+
 .hamburger {
   font-size: 50px;
   background: none;
@@ -252,16 +251,16 @@ button:hover {
   cursor: pointer;
   color: #333;
   margin-left: 20px;
-  display: none; /* hidden by default */
+  display: none; 
 }
 
-/* Mobile nav default hidden */
+
 .nav-links {
   display: flex;
   gap: 1.5rem;
 }
 
-/* On small screens, hide menu initially */
+
 @media (max-width: 768px) {
   .navbar-container {
     flex-direction: column;
@@ -304,10 +303,18 @@ button:hover {
 
   .nav-links a,
   .dropbtn {
-    font-size: 18px;
+    font-size: 30px;
     padding: 0.75rem 1rem;
     text-align: left;
     width: 100%;
+  }
+
+  
+  .dropbtn {
+    background: none;
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
   }
 
   .dropdown-content {
@@ -325,8 +332,11 @@ button:hover {
 
   .dropdown-content a {
     padding: 0.5rem 0.75rem;
+    text-align: center; 
   }
 }
+
+
 
 
 .contact-container {
@@ -469,7 +479,7 @@ button:hover {
   max-width: 900px;
   width: 100%;
   height: 400px;
-  margin: 100px auto 30px auto; /* spaced down below fixed nav */
+  margin: 100px auto 30px auto; 
   overflow: hidden;
   border-radius: 20px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -481,7 +491,7 @@ button:hover {
 .carousel-track {
   display: flex;
   transition: transform 0.6s ease-in-out;
-  width: calc(900px * 3); /* 3 slides, each 900px wide */
+  width: calc(900px * 3); 
   height: 100%;
 }
 
@@ -507,7 +517,7 @@ button:hover {
   }
 
   .carousel-track {
-    width: 300%; /* Just let it overflow naturally for 3 slides */
+    width: 300%; 
   }
 
   .carousel-slide {

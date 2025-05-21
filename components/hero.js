@@ -28,10 +28,10 @@ export function startHeroSlider() {
     track.style.transform = `translateX(-${index * slideWidth}px)`;
   }
 
-  // Auto slide every 3 seconds
+  
   let intervalId = setInterval(goToNextSlide, 3000);
 
-  // Image click → redirect
+  
   images.forEach((img) => {
     img.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -49,7 +49,7 @@ export function startHeroSlider() {
     intervalId = setInterval(goToNextSlide, 3000);
   });
 
-  // Responsive fix on window resize
+  
   window.addEventListener('resize', () => {
     track.style.transform = `translateX(-${index * slides[0].offsetWidth}px)`;
   });

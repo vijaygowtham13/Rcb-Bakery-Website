@@ -30,14 +30,14 @@ export function renderNavbar() {
           <a href="/find-us.html">𝐅𝐈𝐍𝐃𝐔𝐒</a>
           <a href="/contact.html">𝐂𝐎𝐍𝐓𝐀𝐂𝐓</a>
           <a href="/cart.html" class="cart-link">
-            C҉A҉R҉T҉<br>-----()----<br>
+            C҉A҉R҉T҉<br>---------<br>
           </a>
         </nav>
       </div>
     </header>
   `;
 
-  // ✅ Toggle mobile menu
+  
   const hamburger = document.getElementById("hamburger");
   const navLinks = document.getElementById("nav-links");
 
