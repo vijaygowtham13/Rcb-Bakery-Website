@@ -88,6 +88,38 @@
       display: inline-block;
       text-align: center;
     }
+
+    /* Toast message styles */
+    .toast {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #333;
+      color: #fff;
+      padding: 1rem 2rem;
+      border-radius: 10px;
+      font-size: 1rem;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      animation: fadeInOut 2s ease forwards;
+    }
+
+    @keyframes fadeInOut {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+      }
+      10%, 90% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+      }
+    }
   </style>
 </head>
 <body>
@@ -99,6 +131,7 @@
 
   <!-- Grid -->
   <div class="pastry-grid">
+    <!-- Item 1 -->
     <div class="pastry-card">
       <img src="../images/gift1.webp" alt="Assorted Pastry Box" />
       <h3>Assorted Pastry Box</h3>
@@ -112,10 +145,11 @@
       <button onclick="addToCart('Assorted Pastry Box', 1100, '../images/gift1.webp', this)">Add to Cart</button>
     </div>
 
+    <!-- Item 2 -->
     <div class="pastry-card">
       <img src="../images/gift2.webp" alt="Cookie Trio Fiesta Hamper" />
       <h3>Cookie Trio Fiesta Hamper</h3>
-      <p> A fun-filled bundle of classic, nutty, and chocolatey cookies.</p>
+      <p>A fun-filled bundle of classic, nutty, and chocolatey cookies.</p>
       <p>₹1220</p>
       <div class="quantity-control">
         <button onclick="decreaseQuantity(this)">−</button>
@@ -125,6 +159,7 @@
       <button onclick="addToCart('Cookie Trio Fiesta Hamper', 1220, '../images/gift2.webp', this)">Add to Cart</button>
     </div>
 
+    <!-- Item 3 -->
     <div class="pastry-card">
       <img src="../images/gift3.webp" alt="Cupcake Delight Box" />
       <h3>Cupcake Delight Box</h3>
@@ -138,6 +173,7 @@
       <button onclick="addToCart('Cupcake Delight Box', 999, '../images/gift3.webp', this)">Add to Cart</button>
     </div>
 
+    <!-- Item 4 -->
     <div class="pastry-card">
       <img src="../images/gift4.webp" alt="Cookie Carnival Hamper" />
       <h3>Cookie Carnival Hamper</h3>
@@ -151,6 +187,7 @@
       <button onclick="addToCart('Cookie Carnival Hamper', 899, '../images/gift4.webp', this)">Add to Cart</button>
     </div>
 
+    <!-- Item 5 -->
     <div class="pastry-card">
       <img src="../images/gift5.webp" alt="Make Your Dessert Box" />
       <h3>Make Your Dessert Box</h3>
@@ -165,7 +202,10 @@
     </div>
   </div>
 
-  <!-- Cart Logic -->
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- Cart & Toast Script -->
   <script>
     function increaseQuantity(button) {
       const quantitySpan = button.parentElement.querySelector('.quantity');
@@ -181,11 +221,21 @@
       }
     }
 
+    function showToast(message) {
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      setTimeout(() => {
+        toast.remove();
+      }, 2000);
+    }
+
     function addToCart(name, price, image, buttonEl) {
       const quantity = parseInt(buttonEl.parentElement.querySelector('.quantity').textContent);
 
       if (quantity <= 0) {
-        alert("Please increase quantity before adding to cart.");
+        showToast("Please increase quantity first");
         return;
       }
 
@@ -199,16 +249,16 @@
       }
 
       localStorage.setItem('cart', JSON.stringify(cartItems));
-      alert(`${quantity} ${name}(s) added to cart!`);
+      showToast(`${quantity} ${name}(s) added to cart!`);
 
-      if (window.updateCartCount) updateCartCount(); // 🔁 Update count if function is available
+      if (window.updateCartCount) updateCartCount();
     }
   </script>
 
-  <!-- Navbar script -->
+  <!-- Navbar Script -->
   <script type="module">
     import { renderNavbar } from '../components/navbar.js';
-        import {  updateCartCount } from '../utils/cartUtils.js';
+    import { updateCartCount } from '../utils/cartUtils.js';
 
     window.addEventListener('DOMContentLoaded', () => {
       renderNavbar();
@@ -217,15 +267,17 @@
 
     window.updateCartCount = updateCartCount;
   </script>
+
+  <!-- Footer Script -->
   <script>
-  fetch('/footer.html')
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById('footer').innerHTML = data;
-    });
-</script>
+    fetch('/footer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('footer').innerHTML = data;
+      });
+  </script>
 
+  <!-- Footer Container -->
   <div id="footer"></div>
-
 </body>
 </html>

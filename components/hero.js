@@ -20,6 +20,8 @@ export function startHeroSlider() {
   const track = document.querySelector('.carousel-track');
   const slides = document.querySelectorAll('.carousel-slide');
   const images = document.querySelectorAll('.hero-click');
+  
+
   let index = 0;
 
   function goToNextSlide() {
@@ -51,6 +53,7 @@ export function startHeroSlider() {
 
   
   window.addEventListener('resize', () => {
-    track.style.transform = `translateX(-${index * slides[0].offsetWidth}px)`;
+   track.style.transform = `translateX(-${index * window.innerWidth}px)`;
+
   });
 }

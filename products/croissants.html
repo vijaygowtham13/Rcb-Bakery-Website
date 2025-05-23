@@ -88,6 +88,28 @@
         display: inline-block;
         text-align: center;
       }
+
+      .toast {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #4caf50;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 10px;
+        font-size: 1rem;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        z-index: 9999;
+        animation: fadeOut 2s ease-out 2s forwards;
+      }
+
+      @keyframes fadeOut {
+        to {
+          opacity: 0;
+          visibility: hidden;
+        }
+      }
     </style>
   </head>
   <body>
@@ -98,72 +120,65 @@
     <h2 class="page-heading">Delicious Croissants</h2>
 
     <!-- Grid -->
-    <div class="pastry-grid" id="pastry-grid">
-     
-    </div>
+    <div class="pastry-grid" id="pastry-grid"></div>
 
     <!-- Cart Logic -->
     <script>
-   data = [{
-    name : "Croissants Ordinaires",
-    img_url: "../images/croi1.jpg",
-    cost:"₹180",
-    desc:"Classic, flaky layers with a light, buttery touch."
-
-   },
-   {
-     name : "Plain Butter Croissant",
-    img_url: "../images/croi2.jpg",
-    cost:"₹200",
-     desc:"Golden, crisp outside and buttery-soft inside."
-   },
-     {
-     name : "Chocolate Croissant",
-    img_url: "../images/croi3.jpg",
-    cost:"₹220",
-     desc:"Flaky pastry filled with rich, melted chocolate."
-   },
-     {
-     name : "Chocolate Chip Croissant",
-    img_url: "../images/croi4.jpg",
-    cost:"₹240",
-    desc:"Buttery layers studded with sweet chocolate chips."
-   },
-     {
-     name : "Raisin Croissant",
-    img_url: "../images/croi5.jpg",
-    cost:"₹190",
-     desc:"Lightly sweet with juicy raisins tucked in tender folds."
-   }
-  ];
+      const data = [
+        {
+          name: "Croissants Ordinaires",
+          img_url: "../images/croi1.jpg",
+          cost: "₹180",
+          desc: "Classic, flaky layers with a light, buttery touch.",
+        },
+        {
+          name: "Plain Butter Croissant",
+          img_url: "../images/croi2.jpg",
+          cost: "₹200",
+          desc: "Golden, crisp outside and buttery-soft inside.",
+        },
+        {
+          name: "Chocolate Croissant",
+          img_url: "../images/croi3.jpg",
+          cost: "₹220",
+          desc: "Flaky pastry filled with rich, melted chocolate.",
+        },
+        {
+          name: "Chocolate Chip Croissant",
+          img_url: "../images/croi4.jpg",
+          cost: "₹240",
+          desc: "Buttery layers studded with sweet chocolate chips.",
+        },
+        {
+          name: "Raisin Croissant",
+          img_url: "../images/croi5.jpg",
+          cost: "₹190",
+          desc: "Lightly sweet with juicy raisins tucked in tender folds.",
+        },
+      ];
 
       const additems = () => {
-  const ele = document.getElementById("pastry-grid");
-  let items = ``;
-  data.forEach((item) => {
-    items += `
-      <div class="pastry-card">
-        <img src="${item.img_url}" alt="${item.name}" />
-        <h3>${item.name}</h3>
-        <p>${item.desc}</p>
-        <p>${item.cost}</p>
-        <div class="quantity-control">
-          <button onclick="decreaseQuantity(this)">−</button>
-          <span class="quantity">0</span>
-          <button onclick="increaseQuantity(this)">+</button>
+        const ele = document.getElementById("pastry-grid");
+        let items = ``;
+        data.forEach((item) => {
+          items += `
+        <div class="pastry-card">
+          <img src="${item.img_url}" alt="${item.name}" />
+          <h3>${item.name}</h3>
+          <p>${item.desc}</p>
+          <p>${item.cost}</p>
+          <div class="quantity-control">
+            <button onclick="decreaseQuantity(this)">−</button>
+            <span class="quantity">0</span>
+            <button onclick="increaseQuantity(this)">+</button>
+          </div>
+          <button onclick="addToCart('${item.name}', '${item.cost}', '${item.img_url}', this)">Add to Cart</button>
         </div>
-        <button
-          onclick="addToCart('${item.name}', '${item.cost}', '${item.img_url}', this)"
-        >
-          Add to Cart
-        </button>
-      </div>
-    `;
-  });
+      `;
+        });
 
-  ele.innerHTML = items;
-};
-
+        ele.innerHTML = items;
+      };
 
       function increaseQuantity(button) {
         const quantitySpan = button.parentElement.querySelector(".quantity");
@@ -179,13 +194,23 @@
         }
       }
 
+      function showToast(message) {
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.innerText = message;
+        document.body.appendChild(toast);
+        setTimeout(() => {
+          toast.remove();
+        }, 4000);
+      }
+
       function addToCart(name, price, image, buttonEl) {
         const quantity = parseInt(
           buttonEl.parentElement.querySelector(".quantity").textContent
         );
 
         if (quantity <= 0) {
-          alert("Please increase quantity before adding to cart.");
+          showToast("Please increase quantity before adding to cart.");
           return;
         }
 
@@ -199,16 +224,16 @@
         }
 
         localStorage.setItem("cart", JSON.stringify(cartItems));
-        alert(`${quantity} ${name}(s) added to cart!`);
+        showToast(`${quantity} ${name}(s) added to cart!`);
 
-        if (window.updateCartCount) updateCartCount(); // 🔁 Update count if function is available
+        if (window.updateCartCount) updateCartCount();
       }
     </script>
 
     <!-- Navbar script -->
     <script type="module">
       import { renderNavbar } from "../components/navbar.js";
-       import { updateCartCount} from "../utils/cartUtils.js";
+      import { updateCartCount } from "../utils/cartUtils.js";
 
       window.addEventListener("DOMContentLoaded", () => {
         renderNavbar();
@@ -218,6 +243,8 @@
 
       window.updateCartCount = updateCartCount;
     </script>
+
+    <!-- Footer loader -->
     <script>
       fetch("/footer.html")
         .then((response) => response.text())

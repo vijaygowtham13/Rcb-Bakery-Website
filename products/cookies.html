@@ -88,6 +88,26 @@
         display: inline-block;
         text-align: center;
       }
+
+      /* Toast message styling */
+      .toast {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #333;
+        color: #fff;
+        padding: 1rem 2rem;
+        border-radius: 10px;
+        font-size: 1rem;
+        z-index: 9999;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .toast.show {
+        opacity: 1;
+      }
     </style>
   </head>
   <body>
@@ -98,13 +118,11 @@
     <h2 class="page-heading">Delicious Pastries</h2>
 
     <!-- Grid -->
-    <div class="pastry-grid" id="pastry-grid">
-   
-    </div>
+    <div class="pastry-grid" id="pastry-grid"></div>
 
     <!-- Cart Logic -->
     <script>
-     const data = [
+      const data = [
         {
           name: "Chocolate Chip cookies",
           img_url: "../images/cookie1.webp",
@@ -138,29 +156,24 @@
       ];
 
       const additems = () => {
-      let  ele = document.getElementById("pastry-grid");
-       let items = ``;
+        let ele = document.getElementById("pastry-grid");
+        let items = ``;
         data.forEach((item) => {
           items += `
           <div class="pastry-card">
-        <img src="${item.img_url}" alt=${item.name} />
-        <h3>${item.name}</h3>
-        <p>${item.desc}</p>
-        <p>${item.cost}</p>
-        <div class="quantity-control">
-          <button onclick="decreaseQuantity(this)">−</button>
-          <span class="quantity">0</span>
-          <button onclick="increaseQuantity(this)">+</button>
-        </div>
-        <button
-  onclick="addToCart('${item.name}', '${item.cost}', '${item.img_url}', this)"
->
-  Add to Cart
-</button>
-      </div>
+            <img src="${item.img_url}" alt=${item.name} />
+            <h3>${item.name}</h3>
+            <p>${item.desc}</p>
+            <p>${item.cost}</p>
+            <div class="quantity-control">
+              <button onclick="decreaseQuantity(this)">−</button>
+              <span class="quantity">0</span>
+              <button onclick="increaseQuantity(this)">+</button>
+            </div>
+            <button onclick="addToCart('${item.name}', '${item.cost}', '${item.img_url}', this)">Add to Cart</button>
+          </div>
           `;
         });
-
         ele.innerHTML = items;
       };
 
@@ -178,13 +191,26 @@
         }
       }
 
+      function showToast(message) {
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.textContent = message;
+        document.body.appendChild(toast);
+
+        setTimeout(() => toast.classList.add("show"), 10);
+        setTimeout(() => {
+          toast.classList.remove("show");
+          setTimeout(() => document.body.removeChild(toast), 300);
+        }, 2000);
+      }
+
       function addToCart(name, price, image, buttonEl) {
         const quantity = parseInt(
           buttonEl.parentElement.querySelector(".quantity").textContent
         );
 
         if (quantity <= 0) {
-          alert("Please increase quantity before adding to cart.");
+          showToast("Please increase quantity before adding to cart.");
           return;
         }
 
@@ -198,16 +224,16 @@
         }
 
         localStorage.setItem("cart", JSON.stringify(cartItems));
-        alert(`${quantity} ${name}(s) added to cart!`);
+        showToast(`${quantity} ${name}(s) added to cart!`);
 
-        if (window.updateCartCount) updateCartCount(); // 🔁 Update count if function is available
+        if (window.updateCartCount) updateCartCount();
       }
     </script>
 
     <!-- Navbar script -->
     <script type="module">
       import { renderNavbar } from "../components/navbar.js";
-       import { updateCartCount} from "../utils/cartUtils.js";
+      import { updateCartCount } from "../utils/cartUtils.js";
 
       window.addEventListener("DOMContentLoaded", () => {
         renderNavbar();
@@ -217,6 +243,8 @@
 
       window.updateCartCount = updateCartCount;
     </script>
+
+    <!-- Footer Script -->
     <script>
       fetch("/footer.html")
         .then((response) => response.text())
@@ -225,6 +253,7 @@
         });
     </script>
 
+    <!-- Footer -->
     <div id="footer"></div>
   </body>
 </html>

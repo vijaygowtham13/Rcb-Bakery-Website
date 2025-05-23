@@ -1,231 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Pastries</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../styles/style.css" />
-    <link rel="stylesheet" href="/styles/footer.css" />
+<head>
+  <meta charset="UTF-8" />
+  <title>Sandwiches</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../styles/style.css" />
+  <link rel="stylesheet" href="/styles/footer.css" />
+  <style>
+    .page-heading {
+      margin-top: 200px;
+      text-align: center;
+      font-size: 2rem;
+      color: #333;
+    }
 
-    <style>
+    @media (max-width: 768px) {
       .page-heading {
-        margin-top: 200px;
-        text-align: center;
-        font-size: 2rem;
-        color: #333;
+        margin-top: 80px;
+        font-size: 1.5rem;
+        padding: 0 1rem;
       }
+    }
 
-      @media (max-width: 768px) {
-        .page-heading {
-          margin-top: 80px;
-          font-size: 1.5rem;
-          padding: 0 1rem;
-        }
+    .pastry-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+
+    .pastry-card {
+      background-color: #fff8f0;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .pastry-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .pastry-card h3 {
+      margin-top: 0.5rem;
+    }
+
+    .pastry-card p {
+      font-size: 0.9rem;
+    }
+
+    .pastry-card button {
+      background-color: #ff8c42;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .pastry-card button:hover {
+      background-color: #e6762e;
+    }
+
+    .quantity-control {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quantity-control button {
+      padding: 0.3rem 0.7rem;
+      font-size: 1rem;
+    }
+
+    .quantity {
+      font-size: 1rem;
+      width: 20px;
+      display: inline-block;
+      text-align: center;
+    }
+
+    /* Toast styles - centered */
+    #toast {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: rgba(51, 51, 51, 0.95);
+      color: #fff;
+      padding: 16px 28px;
+      border-radius: 8px;
+      font-size: 1rem;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      z-index: 9999;
+    }
+
+    #toast.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <div id="navbar"></div>
+
+  <!-- Page Heading -->
+  <h2 class="page-heading">Sandwiches</h2>
+
+  <!-- Sandwich Grid -->
+  <div class="pastry-grid" id="pastry-grid"></div>
+
+  <!-- Toast Notification -->
+  <div id="toast"></div>
+
+  <!-- Scripts -->
+  <script>
+    const data = [
+      {
+        name: "Club Sandwich",
+        img_url: "../images/sand1.jpg",
+        cost: "₹150",
+        desc: "A hearty stack of layers packed with savory fillings."
+      },
+      {
+        name: "Grilled Cheese Sandwich",
+        img_url: "../images/sand2.webp",
+        cost: "₹120",
+        desc: "Crispy outside, gooey cheesy inside—comfort in every bite."
+      },
+      {
+        name: "Veg Club Sandwich",
+        img_url: "../images/sand3.jpg",
+        cost: "₹140",
+        desc: "Fresh and crunchy with layers of wholesome veggie goodness."
+      },
+      {
+        name: "Cuban Sandwich",
+        img_url: "../images/sand4.jpg",
+        cost: "₹190",
+        desc: "Toasted perfection with ham, roast pork, pickles, and mustard."
+      },
+      {
+        name: "Gourmet Sandwich",
+        img_url: "../images/sand5.jpg",
+        cost: "₹190",
+        desc: "An elevated bite bursting with premium ingredients and bold flavors."
       }
+    ];
 
-      .pastry-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
-        max-width: 1200px;
-        margin: 2rem auto;
-        padding: 1rem;
-      }
-
-      .pastry-card {
-        background-color: #fff8f0;
-        border-radius: 12px;
-        padding: 1rem;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-      }
-
-      .pastry-card img {
-        width: 100%;
-        height: 180px;
-        object-fit: cover;
-        border-radius: 8px;
-      }
-
-      .pastry-card h3 {
-        margin-top: 0.5rem;
-      }
-
-      .pastry-card p {
-        font-size: 0.9rem;
-      }
-
-      .pastry-card button {
-        background-color: #ff8c42;
-        color: white;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        cursor: pointer;
-        margin-top: 10px;
-      }
-
-      .pastry-card button:hover {
-        background-color: #e6762e;
-      }
-
-      .quantity-control {
-        margin-top: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .quantity-control button {
-        padding: 0.3rem 0.7rem;
-        font-size: 1rem;
-      }
-
-      .quantity {
-        font-size: 1rem;
-        width: 20px;
-        display: inline-block;
-        text-align: center;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Navbar -->
-    <div id="navbar"></div>
-
-    <!-- Heading -->
-    <h2 class="page-heading">Sandwiches</h2>
-
-    <!-- Grid -->
-    <div class="pastry-grid" id="pastry-grid">
-     
-    </div>
-
-    <!-- Cart Logic -->
-    <script>
-   data = [{
-    name : "Club Sandwich",
-    img_url: "../images/sand1.jpg",
-    cost:"₹150",
-    desc:"A hearty stack of layers packed with savory fillings."
-
-   },
-   {
-     name : "Grilled Cheese Sandwich",
-    img_url: "../images/sand2.webp",
-    cost:"₹120",
-     desc:"Crispy outside, gooey cheesy inside—comfort in every bite."
-   },
-     {
-     name : "Veg Club Sandwich",
-    img_url: "../images/sand3.jpg",
-    cost:"₹140",
-     desc:"Fresh and crunchy with layers of wholesome veggie goodness."
-   },
-     {
-     name : "Cuban Sandwich",
-    img_url: "../images/sand4.jpg",
-    cost:"₹190",
-    desc:"Toasted perfection with ham, roast pork, pickles, and mustard"
-   },
-     {
-     name : "Gourmet Sandwich",
-    img_url: "../images/sand5.jpg",
-    cost:"₹190",
-     desc:"An elevated bite bursting with premium ingredients and bold flavors."
-   }
-  ];
-
-      const additems = () => {
-  const ele = document.getElementById("pastry-grid");
-  let items = ``;
-  data.forEach((item) => {
-    items += `
-      <div class="pastry-card">
-        <img src="${item.img_url}" alt="${item.name}" />
-        <h3>${item.name}</h3>
-        <p>${item.desc}</p>
-        <p>${item.cost}</p>
-        <div class="quantity-control">
-          <button onclick="decreaseQuantity(this)">−</button>
-          <span class="quantity">0</span>
-          <button onclick="increaseQuantity(this)">+</button>
-        </div>
-        <button
-          onclick="addToCart('${item.name}', '${item.cost}', '${item.img_url}', this)"
-        >
-          Add to Cart
-        </button>
-      </div>
-    `;
-  });
-
-  ele.innerHTML = items;
-};
-
-
-      function increaseQuantity(button) {
-        const quantitySpan = button.parentElement.querySelector(".quantity");
-        let quantity = parseInt(quantitySpan.textContent);
-        quantitySpan.textContent = quantity + 1;
-      }
-
-      function decreaseQuantity(button) {
-        const quantitySpan = button.parentElement.querySelector(".quantity");
-        let quantity = parseInt(quantitySpan.textContent);
-        if (quantity > 0) {
-          quantitySpan.textContent = quantity - 1;
-        }
-      }
-
-      function addToCart(name, price, image, buttonEl) {
-        const quantity = parseInt(
-          buttonEl.parentElement.querySelector(".quantity").textContent
-        );
-
-        if (quantity <= 0) {
-          alert("Please increase quantity before adding to cart.");
-          return;
-        }
-
-        const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-        const index = cartItems.findIndex((item) => item.name === name);
-
-        if (index !== -1) {
-          cartItems[index].quantity += quantity;
-        } else {
-          cartItems.push({ name, price, image, quantity });
-        }
-
-        localStorage.setItem("cart", JSON.stringify(cartItems));
-        alert(`${quantity} ${name}(s) added to cart!`);
-
-        if (window.updateCartCount) updateCartCount(); // 🔁 Update count if function is available
-      }
-    </script>
-
-    <!-- Navbar script -->
-    <script type="module">
-      import { renderNavbar } from "../components/navbar.js";
-       import { updateCartCount} from "../utils/cartUtils.js";
-
-      window.addEventListener("DOMContentLoaded", () => {
-        renderNavbar();
-        updateCartCount();
-        additems();
+    const additems = () => {
+      const grid = document.getElementById("pastry-grid");
+      let html = "";
+      data.forEach((item) => {
+        html += `
+          <div class="pastry-card">
+            <img src="${item.img_url}" alt="${item.name}" />
+            <h3>${item.name}</h3>
+            <p>${item.desc}</p>
+            <p>${item.cost}</p>
+            <div class="quantity-control">
+              <button onclick="decreaseQuantity(this)">−</button>
+              <span class="quantity">0</span>
+              <button onclick="increaseQuantity(this)">+</button>
+            </div>
+            <button onclick="addToCart('${item.name}', '${item.cost}', '${item.img_url}', this)">
+              Add to Cart
+            </button>
+          </div>
+        `;
       });
+      grid.innerHTML = html;
+    };
 
-      window.updateCartCount = updateCartCount;
-    </script>
-    <script>
-      fetch("/footer.html")
-        .then((response) => response.text())
-        .then((data) => {
-          document.getElementById("footer").innerHTML = data;
-        });
-    </script>
+    function increaseQuantity(btn) {
+      const span = btn.parentElement.querySelector(".quantity");
+      let qty = parseInt(span.textContent);
+      span.textContent = qty + 1;
+    }
 
-    <div id="footer"></div>
-  </body>
+    function decreaseQuantity(btn) {
+      const span = btn.parentElement.querySelector(".quantity");
+      let qty = parseInt(span.textContent);
+      if (qty > 0) span.textContent = qty - 1;
+    }
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.className = "show";
+      setTimeout(() => {
+        toast.className = toast.className.replace("show", "");
+      }, 3000);
+    }
+
+    function addToCart(name, price, image, btn) {
+      const qty = parseInt(btn.parentElement.querySelector(".quantity").textContent);
+      if (qty <= 0) {
+        showToast("Please increase quantity before adding to cart.");
+        return;
+      }
+
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const index = cart.findIndex((item) => item.name === name);
+
+      if (index !== -1) {
+        cart[index].quantity += qty;
+      } else {
+        cart.push({ name, price, image, quantity: qty });
+      }
+
+      localStorage.setItem("cart", JSON.stringify(cart));
+      showToast(`${qty} ${name}(s) added to cart!`);
+
+      if (window.updateCartCount) updateCartCount();
+    }
+  </script>
+
+  <!-- Navbar + Cart Count -->
+  <script type="module">
+    import { renderNavbar } from "../components/navbar.js";
+    import { updateCartCount } from "../utils/cartUtils.js";
+
+    window.addEventListener("DOMContentLoaded", () => {
+      renderNavbar();
+      updateCartCount();
+      additems();
+    });
+
+    window.updateCartCount = updateCartCount;
+  </script>
+
+  <!-- Footer Load -->
+  <script>
+    fetch("/footer.html")
+      .then(res => res.text())
+      .then(html => {
+        document.getElementById("footer").innerHTML = html;
+      });
+  </script>
+  <div id="footer"></div>
+</body>
 </html>

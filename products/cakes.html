@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Pastries</title>
+    <title>Cakes</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="../styles/style.css" />
     <link rel="stylesheet" href="/styles/footer.css" />
@@ -88,6 +88,30 @@
         display: inline-block;
         text-align: center;
       }
+
+      /* Toast styles */
+      #toast {
+        visibility: hidden;
+        min-width: 250px;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #fff;
+        text-align: center;
+        border-radius: 8px;
+        padding: 1rem 2rem;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 1rem;
+        z-index: 9999;
+        opacity: 0;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+      }
+
+      #toast.show {
+        visibility: visible;
+        opacity: 1;
+      }
     </style>
   </head>
   <body>
@@ -98,96 +122,14 @@
     <h2 class="page-heading">Delicious Cakes</h2>
 
     <!-- Grid -->
-    <div class="pastry-grid" id="pastry-grid">
-      <!-- <div class="pastry-card">
-        <img src="../images/chocotruf.avif" alt="Chocolate Truffle" />
-        <h3>Chocolate Truffle</h3>
-        <p>Rich chocolate layers for chocolate lovers.</p>
-        <p>₹150</p>
-        <div class="quantity-control">
-          <button onclick="decreaseQuantity(this)">−</button>
-          <span class="quantity">0</span>
-          <button onclick="increaseQuantity(this)">+</button>
-        </div>
-        <button
-          onclick="addToCart('Chocolate Truffle', 150, '../images/chocotruf.avif', this)"
-        >
-          Add to Cart
-        </button>
-      </div>
+    <div class="pastry-grid" id="pastry-grid"></div>
 
-      <div class="pastry-card">
-        <img src="../images/butterscotch.jpg" alt="Butterscotch" />
-        <h3>Butterscotch</h3>
-        <p>Sweet and nutty with a caramel twist.</p>
-        <p>₹120</p>
-        <div class="quantity-control">
-          <button onclick="decreaseQuantity(this)">−</button>
-          <span class="quantity">0</span>
-          <button onclick="increaseQuantity(this)">+</button>
-        </div>
-        <button
-          onclick="addToCart('Butterscotch', 120, '../images/butterscotch.jpg', this)"
-        >
-          Add to Cart
-        </button>
-      </div>
-
-      <div class="pastry-card">
-        <img src="../images/redvelvetcake.jpg" alt="Red Velvet" />
-        <h3>Red Velvet</h3>
-        <p>Soft, creamy, and indulgent delight.</p>
-        <p>₹140</p>
-        <div class="quantity-control">
-          <button onclick="decreaseQuantity(this)">−</button>
-          <span class="quantity">0</span>
-          <button onclick="increaseQuantity(this)">+</button>
-        </div>
-        <button
-          onclick="addToCart('Red Velvet', 140, '../images/redvelvetcake.jpg', this)"
-        >
-          Add to Cart
-        </button>
-      </div>
-
-      <div class="pastry-card">
-        <img src="../images/pineapple.jpg" alt="Pineapple" />
-        <h3>Pineapple</h3>
-        <p>Fresh pineapples in every bite.</p>
-        <p>₹130</p>
-        <div class="quantity-control">
-          <button onclick="decreaseQuantity(this)">−</button>
-          <span class="quantity">0</span>
-          <button onclick="increaseQuantity(this)">+</button>
-        </div>
-        <button
-          onclick="addToCart('Pineapple', 130, '../images/pineapple.jpg', this)"
-        >
-          Add to Cart
-        </button>
-      </div>
-
-      <div class="pastry-card">
-        <img src="../images/almondbutterscotch.jpg" alt="Almond ButterScotch" />
-        <h3>Almond ButterScotch</h3>
-        <p>Crunchy almonds blended with butterscotch.</p>
-        <p>₹130</p>
-        <div class="quantity-control">
-          <button onclick="decreaseQuantity(this)">−</button>
-          <span class="quantity">0</span>
-          <button onclick="increaseQuantity(this)">+</button>
-        </div>
-        <button
-          onclick="addToCart('Almond ButterScotch', 130, '../images/almondbutterscotch.jpg', this)"
-        >
-          Add to Cart
-        </button>
-      </div> -->
-    </div>
+    <!-- Toast container -->
+    <div id="toast"></div>
 
     <!-- Cart Logic -->
     <script>
-     const data = [
+      const data = [
         {
           name: "Cheese Cake",
           img_url: "../images/cakes1.jpg",
@@ -221,26 +163,24 @@
       ];
 
       const additems = () => {
-      let  ele = document.getElementById("pastry-grid");
-       let items = ``;
+        let ele = document.getElementById("pastry-grid");
+        let items = ``;
         data.forEach((item) => {
           items += `
           <div class="pastry-card">
-        <img src="${item.img_url}" alt=${item.name} />
-        <h3>${item.name}</h3>
-        <p>${item.desc}</p>
-        <p>${item.cost}</p>
-        <div class="quantity-control">
-          <button onclick="decreaseQuantity(this)">−</button>
-          <span class="quantity">0</span>
-          <button onclick="increaseQuantity(this)">+</button>
-        </div>
-        <button
-  onclick="addToCart('${item.name}', '${item.cost}', '${item.img_url}', this)"
->
-  Add to Cart
-</button>
-      </div>
+            <img src="${item.img_url}" alt=${item.name} />
+            <h3>${item.name}</h3>
+            <p>${item.desc}</p>
+            <p>${item.cost}</p>
+            <div class="quantity-control">
+              <button onclick="decreaseQuantity(this)">−</button>
+              <span class="quantity">0</span>
+              <button onclick="increaseQuantity(this)">+</button>
+            </div>
+            <button onclick="addToCart('${item.name}', '${item.cost}', '${item.img_url}', this)">
+              Add to Cart
+            </button>
+          </div>
           `;
         });
 
@@ -261,13 +201,24 @@
         }
       }
 
+      // Toast function
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.className = "show";
+
+        setTimeout(() => {
+          toast.className = toast.className.replace("show", "");
+        }, 2500);
+      }
+
       function addToCart(name, price, image, buttonEl) {
         const quantity = parseInt(
           buttonEl.parentElement.querySelector(".quantity").textContent
         );
 
         if (quantity <= 0) {
-          alert("Please increase quantity before adding to cart.");
+          showToast("Please increase quantity before adding to cart.");
           return;
         }
 
@@ -281,7 +232,7 @@
         }
 
         localStorage.setItem("cart", JSON.stringify(cartItems));
-        alert(`${quantity} ${name}(s) added to cart!`);
+        showToast(`${quantity} ${name}(s) added to cart!`);
 
         if (window.updateCartCount) updateCartCount(); // 🔁 Update count if function is available
       }
@@ -290,7 +241,7 @@
     <!-- Navbar script -->
     <script type="module">
       import { renderNavbar } from "../components/navbar.js";
-       import { updateCartCount} from "../utils/cartUtils.js";
+      import { updateCartCount } from "../utils/cartUtils.js";
 
       window.addEventListener("DOMContentLoaded", () => {
         renderNavbar();

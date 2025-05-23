@@ -82,16 +82,7 @@
   </div>
 </div>
 
-<script>
-  function scrollFeatured(direction) {
-    const container = document.getElementById("featured-scroll");
-    const scrollAmount = container.offsetWidth * 0.8;
-    container.scrollBy({
-      left: direction === 'right' ? scrollAmount : -scrollAmount,
-      behavior: 'smooth' 
-    });
-  }
-</script>
+
 
 <script type="module">
   import { setupFeaturedEvents } from './featured.js';

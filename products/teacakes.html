@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Pastries</title>
+  <title>Tea Cakes</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="../styles/style.css" />
   <link rel="stylesheet" href="/styles/footer.css" />
@@ -88,6 +88,27 @@
       display: inline-block;
       text-align: center;
     }
+
+    /* Toast styles */
+    #toast {
+      visibility: hidden;
+      min-width: 250px;
+      background-color: green;
+      color: #fff;
+      text-align: center;
+      border-radius: 8px;
+      padding: 16px;
+      position: fixed;
+      z-index: 9999;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1rem;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      pointer-events: none; /* So clicks pass through */
+      user-select: none;
+    }
   </style>
 </head>
 <body>
@@ -95,12 +116,10 @@
   <div id="navbar"></div>
 
   <!-- Heading -->
-  <h2 class="page-heading">Delicious Pastries</h2>
+  <h2 class="page-heading">Tea Cakes</h2>
 
   <!-- Grid -->
   <div class="pastry-grid">
-  
-
     <div class="pastry-card">
       <img src="../images/teacakes.webp" alt="Acinnamon tea cake" />
       <h3>Acinnamon tea cake</h3>
@@ -111,12 +130,41 @@
         <span class="quantity">0</span>
         <button onclick="increaseQuantity(this)">+</button>
       </div>
-      <button onclick="addToCart('Acinnamon tea cake', 130, '../images/teacakes.webp', this)">Add to Cart</button>
+      <button onclick="addToCart('Acinnamon tea cake', 330, '../images/teacakes.webp', this)">Add to Cart</button>
+    </div>
+      <div class="pastry-card">
+      <img src="../images/teacakes.webp" alt="Acinnamon tea cake" />
+      <h3>Rcb tea cake</h3>
+      <p>Everyone deserves a little treat with their morning or afternoon cuppa, and this moist tea cake does the job beautifully.</p>
+      <p>₹550</p>
+      <div class="quantity-control">
+        <button onclick="decreaseQuantity(this)">−</button>
+        <span class="quantity">0</span>
+        <button onclick="increaseQuantity(this)">+</button>
+      </div>
+      <button onclick="addToCart('Acinnamon tea cake', 330, '../images/teacakes.webp', this)">Add to Cart</button>
     </div>
   </div>
 
+  <!-- Toast container -->
+  <div id="toast"></div>
+
   <!-- Cart Logic -->
   <script>
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.style.visibility = "visible";
+      toast.style.opacity = "1";
+
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => {
+          toast.style.visibility = "hidden";
+        }, 500);
+      }, 2000);
+    }
+
     function increaseQuantity(button) {
       const quantitySpan = button.parentElement.querySelector('.quantity');
       let quantity = parseInt(quantitySpan.textContent);
@@ -135,7 +183,7 @@
       const quantity = parseInt(buttonEl.parentElement.querySelector('.quantity').textContent);
 
       if (quantity <= 0) {
-        alert("Please increase quantity before adding to cart.");
+        showToast("Please increase quantity before adding to cart.");
         return;
       }
 
@@ -149,32 +197,33 @@
       }
 
       localStorage.setItem('cart', JSON.stringify(cartItems));
-      alert(`${quantity} ${name}(s) added to cart!`);
+      showToast(`${quantity} ${name}(s) added to cart!`);
 
-      if (window.updateCartCount) updateCartCount(); // 🔁 Update count if function is available
+      if (window.updateCartCount) updateCartCount();
     }
   </script>
 
   <!-- Navbar script -->
   <script type="module">
-      import { renderNavbar } from "../components/navbar.js";
-       import { updateCartCount} from "../utils/cartUtils.js";
+    import { renderNavbar } from "../components/navbar.js";
+    import { updateCartCount } from "../utils/cartUtils.js";
 
-      window.addEventListener("DOMContentLoaded", () => {
-        renderNavbar();
-        updateCartCount();
-        additems();
-      });
-
-      window.updateCartCount = updateCartCount;
-    </script>
-  <script>
-  fetch('/footer.html')
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById('footer').innerHTML = data;
+    window.addEventListener("DOMContentLoaded", () => {
+      renderNavbar();
+      updateCartCount();
+      // additems();  <-- Not needed here as you have static content
     });
-</script>
+
+    window.updateCartCount = updateCartCount;
+  </script>
+
+  <script>
+    fetch('/footer.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('footer').innerHTML = data;
+      });
+  </script>
 
   <div id="footer"></div>
 

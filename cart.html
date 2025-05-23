@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Shopping Cart</title>
   <link rel="stylesheet" href="../styles/style.css" />
   <link rel="stylesheet" href="../styles/footer.css" />
@@ -106,53 +106,59 @@
       background-color: #45a049;
     }
 
-    .success-message {
+    /* Toast styles */
+    #toast {
+      visibility: hidden;
+      min-width: 250px;
+      background-color: green;
+      color: #fff;
+      text-align: center;
+      border-radius: 8px;
+      padding: 16px;
+      position: fixed;
+      z-index: 99999;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1rem;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    #confirmation-toast {
       display: none;
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 9999;
-      justify-content: center;
-      align-items: center;
-      animation: fadeIn 0.3s ease forwards;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .success-message-container {
-      background-color: #fff;
-      width: 300px;
-      height: 200px;
-      padding: 1rem;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      color: #333;
+      padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      z-index: 100000;
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
     }
 
-    .success-message p {
-      color: #28a745;
-      font-size: 1.2rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .success-message button {
-      padding: 0.5rem 1rem;
-      background-color: #28a745;
-      color: white;
+    #confirmation-toast button {
+      margin: 10px 8px 0;
+      padding: 8px 16px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      font-size: 1rem;
     }
 
-    .success-message button:hover {
-      background-color: #218838;
+    #confirm-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    #cancel-btn {
+      background-color: #6c757d;
+      color: white;
     }
   </style>
 </head>
@@ -161,10 +167,8 @@
 
   <div class="cart-container">
     <h2>Your Cart</h2>
-
     <div id="cart-items"></div>
 
-    <!-- 👇 Grand total added here -->
     <div id="cart-total" style="text-align: right; font-size: 1.2rem; font-weight: bold; margin-top: 1rem;"></div>
 
     <button class="action-btn" onclick="showCheckoutForm()">Proceed to Checkout</button>
@@ -177,16 +181,50 @@
     </div>
   </div>
 
-  <div class="success-message" id="success-message">
-    <div class="success-message-container">
-      <p>Your order has been successfully placed!</p>
-      <button onclick="closeSuccessMessage()">Close</button>
-    </div>
+  <!-- Toast containers -->
+  <div id="toast"></div>
+  <div id="confirmation-toast">
+    <p id="confirm-message"></p>
+    <button id="confirm-btn">Yes</button>
+    <button id="cancel-btn">No</button>
   </div>
 
   <div id="footer"></div>
 
   <script>
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.style.visibility = "visible";
+      toast.style.opacity = "1";
+
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => {
+          toast.style.visibility = "hidden";
+        }, 500);
+      }, 2000);
+    }
+
+    function showConfirmationToast(message, onConfirm) {
+      const confirmToast = document.getElementById("confirmation-toast");
+      const confirmMessage = document.getElementById("confirm-message");
+      const confirmBtn = document.getElementById("confirm-btn");
+      const cancelBtn = document.getElementById("cancel-btn");
+
+      confirmMessage.textContent = message;
+      confirmToast.style.display = "block";
+
+      confirmBtn.onclick = () => {
+        confirmToast.style.display = "none";
+        onConfirm();
+      };
+
+      cancelBtn.onclick = () => {
+        confirmToast.style.display = "none";
+      };
+    }
+
     function renderCart() {
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
       const cartItemsContainer = document.getElementById("cart-items");
@@ -207,9 +245,8 @@
         itemDiv.classList.add("cart-item");
 
         const numericPrice = parseFloat(String(item.price).replace(/[^\d.]/g, ""));
-
-  const itemTotal = numericPrice * item.quantity;
-  total += itemTotal;
+        const itemTotal = numericPrice * item.quantity;
+        total += itemTotal;
 
         itemDiv.innerHTML = `
           <img src="${item.image}" alt="${item.name}" />
@@ -233,19 +270,27 @@
       cart.splice(index, 1);
       localStorage.setItem("cart", JSON.stringify(cart));
       renderCart();
+      showToast("Item removed from cart.");
     }
 
     function clearCart() {
-      if (confirm("Are you sure you want to remove all items?")) {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      if (cart.length === 0) {
+        showToast("Your cart is already empty.");
+        return;
+      }
+
+      showConfirmationToast("Are you sure you want to remove all items from the cart?", () => {
         localStorage.removeItem("cart");
         renderCart();
-      }
+        showToast("All items removed from cart.");
+      });
     }
 
     function showCheckoutForm() {
       const cart = JSON.parse(localStorage.getItem("cart")) || [];
       if (cart.length === 0) {
-        alert("Your cart is empty. Please add items before proceeding to checkout.");
+        showToast("Your cart is empty. Please add items before proceeding to checkout.");
         return;
       }
       document.getElementById("checkout-form").style.display = "block";
@@ -254,18 +299,14 @@
     function submitCheckout() {
       const email = document.getElementById("email").value.trim();
       if (!email) {
-        alert("Please enter your email.");
+        showToast("Please enter your email.");
         return;
       }
 
       localStorage.removeItem("cart");
       renderCart();
       document.getElementById("checkout-form").style.display = "none";
-      document.getElementById("success-message").style.display = "flex";
-    }
-
-    function closeSuccessMessage() {
-      document.getElementById("success-message").style.display = "none";
+      showToast("Your order has been successfully placed!");
     }
 
     window.addEventListener("DOMContentLoaded", () => {

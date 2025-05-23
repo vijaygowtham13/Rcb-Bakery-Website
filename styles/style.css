@@ -9,13 +9,14 @@ body {
     margin: 0;
   padding: 0;
   box-sizing: border-box;
-   padding-top: 50px;
+   padding-top: 30px;
+    font-family: 'Poppins', sans-serif;
       
    
 }
 
 header.navbar {
-  background-color:black;
+  background-color:#e5b58282;
   color: white;
   padding-top: 2rem;
   padding-bottom: 1rem;
@@ -39,7 +40,7 @@ nav a {
 }
 
 nav .cart-link {
-  background-color: #ff5722;
+  background-color: #ff5722; 
   border-radius: 5px;
   padding: 0.5rem 1rem;
 }
@@ -132,6 +133,10 @@ button:hover {
   top: 0;
   left: 0;
   z-index: 999;
+   font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .navbar-container {
@@ -160,7 +165,7 @@ button:hover {
 
 .logo-img {
   width: 60px;  
-  height: auto;
+  height: 60px;
   margin-right: 15px; 
 }
 
@@ -177,9 +182,12 @@ button:hover {
 .nav-links a {
   text-decoration: none;
   color: black;
-  font-weight: 600;
   transition: color 0.3s;
   font-size: 20px;
+   font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .nav-links a:hover {
@@ -194,12 +202,16 @@ button:hover {
 .dropbtn {
   background-color: transparent;
   color: #333;
-  font-weight: bold;
+  
   border: none;
   cursor: pointer;
   padding: 10px 15px;
   font-size: 20px;
   transition: color 0.3s ease;
+   font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 
@@ -259,33 +271,32 @@ button:hover {
   display: flex;
   gap: 1.5rem;
 }
-
-
 @media (max-width: 768px) {
   .navbar-container {
     flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-    padding: 1rem;
+    align-items: stretch; /* Align all children to full width */
+    padding: 0.5rem 1rem;
+    gap: 0; /* Remove any extra spacing */
     height: auto;
   }
 
   .logo {
-    margin-left: 0;
-    font-size: 1.3rem;
-    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0; /* Remove bottom space */
   }
 
   .logo-img {
-    width: 50px;
-    margin-right: 10px;
+    width: 40px;
+    margin: 0;
   }
 
   .hamburger {
     display: block;
     align-self: flex-end;
-    margin-top: -2.5rem;
-    margin-right: 10px;
+    margin-top: -2.2rem;
+    margin-right: 5px;
   }
 
   .nav-links {
@@ -294,47 +305,58 @@ button:hover {
     width: 100%;
     background-color: white;
     border-top: 1px solid #ccc;
-    padding: 1rem 0;
+    padding: 0;
   }
 
   .nav-links.show-mobile-menu {
     display: flex;
   }
 
-  .nav-links a,
-  .dropbtn {
-    font-size: 30px;
-    padding: 0.75rem 1rem;
+  .nav-links a
+   {
+    font-size: 18px;
+    padding: 0.75rem 0.75rem;
     text-align: left;
     width: 100%;
+    padding-left: 50px;
   }
 
-  
   .dropbtn {
     background: none;
     border: none;
     font-family: inherit;
     cursor: pointer;
+    text-align: left;
+  }
+
+  .dropdown {
+    width: 100%;
   }
 
   .dropdown-content {
     position: static;
     display: none;
-    grid-template-columns: 1fr;
-    width: 100%;
-    padding-left: 1rem;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem 0;
+    background-color: #f9f9f9;
   }
 
   .dropdown:hover .dropdown-content,
   .dropdown:focus-within .dropdown-content {
-    display: grid;
+    display: flex;
   }
 
   .dropdown-content a {
-    padding: 0.5rem 0.75rem;
-    text-align: center; 
+    text-align: center;
+    width: 70%;
+    padding: 0.5rem;
   }
 }
+
+
+
+
 
 
 
@@ -347,6 +369,7 @@ button:hover {
   border: 1px solid #ffe4c4;
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  padding-top: 100px;
 }
 
 .contact-container h2 {
@@ -424,6 +447,7 @@ button:hover {
   border-radius: 12px;
   background-color: #fff8f5;
   box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  padding-top: 100px;
 }
 
 .find-us-container h1 {
@@ -476,38 +500,36 @@ button:hover {
 
 /* Hero Section */
 .hero-carousel {
-  max-width: 900px;
-  width: 100%;
-  height: 400px;
-  margin: 100px auto 30px auto; 
+  width: 100vw; 
+  height: 100vh; 
+  margin: 0 auto;
   overflow: hidden;
-  border-radius: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 0; 
+  box-shadow: none; 
   position: relative;
   background-color: #000;
-   margin-top: 140px;
 }
 
 .carousel-track {
   display: flex;
   transition: transform 0.6s ease-in-out;
-  width: calc(900px * 3); 
+  width: 300vw; 
   height: 100%;
 }
 
 .carousel-slide {
-  width: 900px;
-  height: 400px;
+  width: 100vw;
+  height: 100vh;
   flex-shrink: 0;
 }
 
 .carousel-slide img {
-  width: 100%;
+width: 100%;
   height: 100%;
-  object-fit: cover;
   border-radius: 1.5rem;
   display: block;
 }
+
 @media (max-width: 768px) {
   .hero-carousel {
     

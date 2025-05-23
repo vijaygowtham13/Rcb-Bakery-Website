@@ -5,32 +5,32 @@ export function renderNavbar() {
       
         <div class="logo">
           <img src="/images/logo.png" alt="RCB Logo" class="logo-img" />
-          <span>𝕽𝕮𝕭 𝔹𝔸𝕂𝔼ℝ𝕐</span>
+          <span>Rcb Bakery</span>
            <button class="hamburger" id="hamburger">&#9776;</button> <!-- ☰ -->
         </div>
        
         <nav class="nav-links" id="nav-links">
-          <a href="/index.html">𝐇𝐎𝐌𝐄</a>
-          <a href="/about.html">𝐀𝐁𝐎𝐔𝐓</a>
+          <a href="/index.html">Home</a>
+          <a href="/about.html">About</a>
           <div class="dropdown">
-            <button class="dropbtn">𝐏𝐑𝐎𝐃𝐔𝐂𝐓𝐒▾</button>
+            <button class="dropbtn">Products▾</button>
             <div class="dropdown-content">
               <a href="/products/cakes.html">Cakes</a>
               <a href="/products/pastries.html">Pastries</a>
               <a href="/products/cookies.html">Cookies</a>
-              <a href="/products/breads.html">Breads</a>
+              <a href="/products/breads.html">Ee Saala Specials</a>
               <a href="/products/sandwich.html">Sandwich</a>
-              <a href="/products/beverages.html">Beverages</a>
-              <a href="/products/brownies.html">Brownies</a>
+              <a href="/products/beverages.html">Summer Specials</a>
+              <a href="/products/brownies.html">Virat Specials</a>
               <a href="/products/giftings.html">Giftings</a>
               <a href="/products/teacakes.html">Teacakes</a>
               <a href="/products/croissants.html">Croissants</a>
             </div>
           </div>
-          <a href="/find-us.html">𝐅𝐈𝐍𝐃𝐔𝐒</a>
-          <a href="/contact.html">𝐂𝐎𝐍𝐓𝐀𝐂𝐓</a>
+          <a href="/find-us.html">Findus</a>
+          <a href="/contact.html">Contactus</a>
           <a href="/cart.html" class="cart-link">
-            C҉A҉R҉T҉<br>---------<br>
+          🛒Cart<br>
           </a>
         </nav>
       </div>
