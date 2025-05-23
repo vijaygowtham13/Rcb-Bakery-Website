@@ -4,7 +4,7 @@ export function renderFindUs() {
       <h1>Visit Our Bakery</h1>
       <div class="find-us-content">
         <div class="store-details">
-          <h2>Bakery Bliss</h2>
+          <h2>Rcb Bakery</h2>
           <p>📍 123 Sweet Street, Dessert City, CA 90001</p>
           <p>📞 +1 (123) 456-7890</p>
           <p>🕒 Open: Mon – Sun | 8:00 AM – 8:00 PM</p>

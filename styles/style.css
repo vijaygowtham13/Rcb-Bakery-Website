@@ -9,7 +9,7 @@ body {
     margin: 0;
   padding: 0;
   box-sizing: border-box;
-   padding-top: 100px;
+   padding-top: 70px;
     font-family: 'Poppins', sans-serif;
       
    
@@ -439,6 +439,7 @@ button:hover {
   color: #b35610;
 }
 
+
 .find-us-container {
   max-width: 1000px;
   margin: 2rem auto;
@@ -526,7 +527,7 @@ button:hover {
 .carousel-slide img {
 width: 100%;
   height: 100%;
-  border-radius: 1.5rem;
+  border-radius: 0rem;
   display: block;
 }
 

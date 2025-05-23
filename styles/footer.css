@@ -1,4 +1,4 @@
-.site-footer {
+ .site-footer {
   background-color: #1a1a1a;
   color: #f1f1f1;
   padding: 20px 15px 10px;
@@ -12,6 +12,7 @@
   gap: 20px;
   max-width: 1100px;
   margin: 0 auto;
+  
 }
 
 .footer-column h4 {
@@ -60,4 +61,4 @@
   color: #aaa;
   border-top: 1px solid #444;
 
-}
+} 
